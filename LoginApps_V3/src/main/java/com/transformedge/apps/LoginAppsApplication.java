@@ -6,8 +6,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 /*
- * Created By Avinash Singh
- * Date : 19-march-2019
+ *  Created By Avinash Singh
+ *  Date : 19-march-2019
  */
 @SpringBootApplication
 public class LoginAppsApplication extends SpringBootServletInitializer{
