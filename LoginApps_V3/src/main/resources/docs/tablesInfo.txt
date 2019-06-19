@@ -1,0 +1,13 @@
+========================== Temporary Tables  ===================
+
+Gender Table (two columns ====> gender and value)
+gender    value
+Male      0
+Female    1
+Others   -1
+
+Active/Inactive Table  (Two columns =====> status and value)
+status   value
+Active   1
+Inactive 0
+

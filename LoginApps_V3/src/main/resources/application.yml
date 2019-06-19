@@ -1,0 +1,33 @@
+spring:
+  data:
+    rest:
+      basePath: /home
+      
+
+###################### base ip url ##########################
+baseIpPath : http://192.168.1.8:8089/
+
+##################### Project assignment ########################
+projectAssignment: Project Assignment Info
+     
+####################### password reset subject ###################
+password:
+  reset:
+    subject: "Password Reset Request"
+    url: resetPassword?token=$tokenValue
+  
+ 
+service:
+  mail:
+    host: smtp.gmail.com
+    username: services@transformedge.com
+    password: Teserv321
+    port: 857
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            
+token:
+  secret: "secretkeytoken"

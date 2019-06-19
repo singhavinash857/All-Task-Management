@@ -1,0 +1,188 @@
+#welcomeCss {
+	color: #FFC312;
+	font-size: 18px;
+	font-family: Cambria;
+}
+
+#paginationBtnCss
+{
+	color: #FFD700;
+	font-size: 18px;
+	font-family: Cambria;
+}
+
+#pageNumberId{
+color: #FFD700;
+	font-size: 18px;
+	font-family: Cambria;
+}
+
+#searchboxCss{
+	color: #FFC312;
+	font-size: 18px;
+	font-family: Cambria;
+}
+#loginErrorMsgCss {
+	color: red;
+	font-family: Cambria;
+}
+
+.dropdown-toggle {
+	color: #1e90ff;
+	font-family: Cambria;
+	font-size: 18px;
+}
+
+
+#homeBtnCss {
+	color: #FFC312;
+	font-family: Cambria;
+}
+
+#welcomeMsgCss {
+	color: #1e90ff;
+	font-family: Cambria;
+	font-size: 20px;
+}
+
+#welcomePageCardCss {
+	margin: 0 auto;
+	background-color: rgba(0, 0, 0, 0.4) !important;
+	font-family: Cambria;
+	color: #FFC312;
+	font-size: 18px;
+	width: 15rem;
+	height: 15rem;
+	font-weight: bold;
+}
+
+#navbarCss {
+	color: #FFC312;
+	font-family: Cambria;
+}
+
+#loginBtnCss {
+	color: black;
+	background-color: #FFC312;
+	width: 80px; "
+	padding-left: 400px;
+	font-size: 16px;
+	text-align: center;
+}
+
+a {
+	color: white;
+}
+
+tr {
+	color: white;
+	text-align: center;
+}
+
+.form-content {
+	padding: 5%;
+	margin-top: 2%;
+}
+
+.form-control {
+	border-radius: 1.5rem;
+}
+
+.form-group {
+	color: #fff;
+	font-family: Cambria;
+	font-size: 18px;
+}
+
+#formRowCss {
+	color: #fff;
+	font-family: Cambria;
+	font-size: 18px;
+}
+.table-responsive {
+	color: #fff;
+	font-family: Cambria;
+	font-size: 17px;
+}
+
+/* Css for upload photo */
+.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	padding-top: 150px; /* Location of the box */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 10px;
+	border: 1px solid #888;
+	width: 20%;
+}
+
+/* The Close Button */
+.close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover, .close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+#uploadEmpPhotoId {
+	color: black;
+	background-color: #FFC312;
+	width: 80px; "
+	padding-left: 400px;
+	font-size: 16px;
+	text-align: center;
+}
+
+#uploadfile {
+	color: black;
+	background-color: #1e90ff;
+	font-size: 16px;
+	text-align: center;
+}
+
+#btnSubmit {
+	background: -webkit-linear-gradient(right, #0072ff, #8811c5);
+	border: none;
+	border-radius: 1.5rem;
+		font-family: Cambria;
+	
+}
+
+input {
+    background: transparent;
+}
+
+.buttonload {
+ background-color: #A52A2A; /*  background colour*/
+ border: none; /* Remove borders */
+ color: white; /* White text */
+ padding: 12px 24px; /* Some padding */
+ font-size: 16px; /* Set a font-size */
+}
+
+/* Add a right margin to each icon */
+.fa {
+ margin-left: -12px;
+ margin-right: 8px;
+}
+
+
