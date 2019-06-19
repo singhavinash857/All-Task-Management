@@ -1,0 +1,367 @@
+server:
+  port: 8088
+camel:
+  springboot:
+    name: TEewb
+management:
+  port: 8081
+endpoints:
+  enabled: false
+  health:
+    enabled: true
+quickstart:
+  generateOrderPeriod: 10s
+  processOrderPeriod: 30s
+
+spring:
+  datasource:
+    platform: postgres
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ewb
+    username: postgres
+    password: postgresql123
+
+
+############################# EWB template configuration#######################
+template-configuration:
+  templatePath: D:/TE_EWB/new_verison/templates/
+  pageTemplatePath: D:/TE_EWB/new_verison/templates/pages/
+#  templates:
+#    -
+#      name: generateEwayBill
+#      path: /Users/chandrasekarramaswamy/Projects/TransformEdge/TEewb/teewb/src/main/templates/GenerateEwayBillPerInvoice.vm
+#    -
+#      name: generateEwayBillAudit
+#      path: /Users/chandrasekarramaswamy/Projects/TransformEdge/TEewb/teewb/src/main/templates/GenerateEwayBillAudit.vm
+#    -
+#      name: displayInvoices
+#      path: /Users/chandrasekarramaswamy/Projects/TransformEdge/TEewb/teewb/src/main/templates/oracle/pages/DisplayInvoices.vm
+#    -
+#      name: displayInvoiceDetails
+#      path: /Users/chandrasekarramaswamy/Projects/TransformEdge/TEewb/teewb/src/main/templates/oracle/pages/DisplayInvoiceDetails.vm
+#    -
+#      name: displayInvoiceDetails
+#      path: /Users/chandrasekarramaswamy/Projects/TransformEdge/TEewb/teewb/src/main/templates/oracle/pages/DisplayInvoiceDetails.vm
+
+
+################################ Database table details configuration ########################
+# list of columns in invoice and items table. separated by comma
+table-metadata-configuration:
+  tables:
+    -
+      name: invoiceTable
+      identifierColumn: e_trx_id
+      columns:
+        - e_trx_id
+        - e_process_source
+        - e_process_operation
+        - e_supplytype
+        - e_subsupplytype
+        - e_subsupplydesc
+        - e_doctype
+        - e_docno
+        - e_docdate
+        - e_fromgstin
+        - e_fromtrdname
+        - e_fromaddr1
+        - e_fromaddr2
+        - e_fromplace
+        - e_frompincode
+        - e_fromstatecode
+        - e_actfromstatecode
+        - e_togstin
+        - e_totrdname
+        - e_toaddr1
+        - e_toaddr2
+        - e_toplace
+        - e_topincode
+        - e_tostatecode
+        - e_acttostatecode
+        - e_transactiontype
+        - e_othervalue  
+        - e_totalvalue
+        - e_cgstvalue
+        - e_sgstvalue
+        - e_igstvalue
+        - e_cessvalue
+        - e_cessnonadvolvalue
+        - e_totinvvalue
+        - e_transporterid
+        - e_transportername
+        - e_transdocno
+        - e_transmode
+        - e_transdistance
+        - e_transdocdate
+        - e_vehicleno
+        - e_vehicletype
+        - e_location
+        - e_fromgstin
+    -
+      name: itemTable
+      columns:
+        - e_productname
+        - e_productdesc
+        - e_hsncode
+        - e_quantity
+        - e_qtyunit
+        - e_cgstrate
+        - e_sgstrate
+        - e_igstrate
+        - e_cessrate
+        - e_cessnonadvol
+        - e_taxablevalue
+
+############ Queries for fetching data ##################
+query-configuration:
+  source: CSV
+  queries:
+    -
+      name: generateEwbForInvoiceDocuments
+      query: select * from xxte_ewb_main_tbl where e_process_status in ('N', 'E') and e_doctype = 'INV'
+      onConsumeInvoiceQuery: UPDATE xxte_ewb_main_tbl SET e_process_status = 'P', g_ewaybill_no = :#${body.ewayBillNo}, g_valid_upto = :#${body.validUpto} WHERE e_trx_id = :#${exchangeProperty.processedInvoiceID}
+      onConsumeFailInvoiceQuery: UPDATE xxte_ewb_main_tbl SET e_process_status = 'E', g_error_message = :#${body.errorDesciption} WHERE e_trx_id = :#${exchangeProperty.processedInvoiceID}
+      onExceptionInvoiceQuery: UPDATE xxte_ewb_main_tbl SET e_process_status = 'E' WHERE e_trx_id = :#${exchangeProperty.processedInvoiceID}
+      updateTrackingAndBatchQuery: UPDATE xxte_ewb_main_tbl SET intg_tracking_id = :#${header.CouchDbId}, intg_batch_id = :#${exchangeProperty.uuid} WHERE e_trx_id = :#${exchangeProperty.processedInvoiceID}
+      initialDelay: 5s
+      consumeDelay: 5m
+    -
+      name: listInvoices
+      query: SELECT * FROM xxte_ewb_main_tbl
+    -
+      name: findInvoice
+      query: select * from xxte_ewb_main b, xxte_ewb_item i where b.trx_id = i.trx_id and b.trx_id = :#${header.trx_id}
+
+####################### CSV configuration #######################
+csv-configuration:
+  configurations:
+    -
+      name: generateEwbForInvoiceDocuments
+      inputPath: D:/TE_EWB/TE_DEV/GenEwb/DataIn
+      outputPath: D:/TE_EWB/TE_DEV/GenEwb/DataOut
+      userName:
+      password:
+      initialDelay: 5000
+      consumeDelay: 5000
+      tableMetadataConfiguration:
+        tables:
+          -
+            name: invoiceTable
+            identifierColumn: e_trx_id
+            columns:
+              - e_trx_id
+              - e_process_source
+              - e_process_operation
+              - e_supplytype
+              - e_subsupplytype
+              - e_subsupplydesc
+              - e_doctype
+              - e_docno
+              - e_docdate
+              - e_fromgstin
+              - e_fromtrdname
+              - e_fromaddr1
+              - e_fromaddr2
+              - e_fromplace
+              - e_frompincode
+              - e_fromstatecode
+              - e_actfromstatecode
+              - e_togstin
+              - e_totrdname
+              - e_toaddr1
+              - e_toaddr2
+              - e_toplace
+              - e_topincode
+              - e_tostatecode
+              - e_acttostatecode
+              - e_transactiontype
+              - e_othervalue    
+              - e_totalvalue
+              - e_cgstvalue
+              - e_sgstvalue
+              - e_igstvalue
+              - e_cessvalue
+              - e_cessnonadvolvalue
+              - e_totinvvalue
+              - e_transporterid
+              - e_transportername
+              - e_transdocno
+              - e_transmode
+              - e_transdistance
+              - e_transdocdate
+              - e_vehicleno
+              - e_vehicletype
+              - e_location
+          -
+            name: itemTable
+            columns:
+              - e_productname
+              - e_productdesc
+              - e_hsncode
+              - e_quantity
+              - e_qtyunit
+              - e_cgstrate
+              - e_sgstrate
+              - e_igstrate
+              - e_cessrate
+              - e_cessnonadvol
+              - e_taxablevalue
+      outputColumns:
+        - e_process_operation
+        - e_trx_id
+        - intg_tracking_id
+        - e_process_source
+        - e_docno
+        - e_doctype
+        - e_process_status
+        - g_status
+        - g_ewaybill_no
+        - g_ewaybill_date
+        - g_valid_upto
+        - g_error_code
+        - g_error
+        - g_error_description
+      validation:
+        numericColumns:
+          - e_fromstatecode
+          - e_actfromstatecode
+          - e_tostatecode
+          - e_acttostatecode
+          - e_transactiontype
+          - e_totalvalue
+          - e_cgstvalue
+          - e_sgstvalue
+          - e_igstvalue
+          - e_cessvalue
+          - e_cessnonadvolvalue
+          - e_totinvvalue
+          - e_hsncode
+          - e_quantity
+          - e_cgstrate
+          - e_sgstrate
+          - e_igstrate
+          - e_cessrate
+          - e_cessadvol
+          - e_cessnonadvol
+          - e_taxablevalue
+    -
+          name: cancelEwayBill
+          inputPath: D:/TE_EWB/TE_DEV/CalcelEwb/DataIn
+          outputPath: D:/TE_EWB/TE_DEV/CalcelEwb/DataOut
+          userName:
+          password:
+          initialDelay: 5000
+          consumeDelay: 5000
+          tableMetadataConfiguration:
+            tables:
+              -
+                name: invoiceTable
+                identifierColumn: e_trx_id
+                columns:
+                  - e_trx_id
+                  - e_process_source
+                  - e_process_operation
+                  - e_doc_num
+                  - e_doc_type
+                  - e_ewayBillNo
+                  - e_cancelRsnCode
+                  - e_cancelRmrk
+                  - e_location
+                  - e_fromgstin
+          outputColumns:
+            - e_trx_id
+            - intg_tracking_id
+            - e_process_source
+            - e_process_operation
+            - e_doc_num
+            - e_doc_type
+            - g_ewayBillNo
+            - g_ewbCancelDate
+            - e_process_status
+            - g_error_code
+            - g_error
+            - g_error_description
+    -
+          name: updateVehicle
+          inputPath: D:/TE_EWB/TE_DEV/UpdateEwb/DataIn
+          outputPath: D:/TE_EWB/TE_DEV/UpdateEwb/DataOut
+          userName:
+          password:
+          initialDelay: 5000
+          consumeDelay: 5000
+          tableMetadataConfiguration:
+            tables:
+              -
+                name: invoiceTable
+                identifierColumn: e_trx_id
+                columns:
+                  - e_trx_id
+                  - e_process_source
+                  - e_process_operation
+                  - e_doc_num
+                  - e_doc_type
+                  - e_ewayBillNo
+                  - e_vehicleNo
+                  - e_fromPlace
+                  - e_fromState
+                  - e_reasonCode
+                  - e_reasonRem
+                  - e_transDocNo
+                  - e_transDocDate
+                  - e_transMode
+                  - e_vehicleType
+                  - e_location
+                  - e_fromgstin
+          outputColumns:
+            - e_trx_id
+            - intg_tracking_id
+            - e_process_source
+            - e_process_operation
+            - g_valip_upto
+            - g_vehicle_update_date
+            - e_process_status
+            - g_error_code
+            - g_error
+            - g_error_description
+
+####################### EWB API configuration ####################
+api-configuration:
+  apis:
+    -
+      name: generateEwayBill
+      headers:
+        Ocp-Apim-Subscription-Key: 7ad84a349ab045e7a2e0f274f17a8855
+        Gstin: 
+        sourcetype: ERP
+        referenceno: WEP001672
+        outputtype: JSON
+        Content-Type: application/json
+        Location: 
+        HTTP_METHOD: POST
+      url: https4://api.wepgst.com/asp/ewaybill
+    -
+      name: cancelEwayBill
+      headers:
+        Ocp-Apim-Subscription-Key: 7ad84a349ab045e7a2e0f274f17a8855
+        Gstin:
+        sourcetype: ERP
+        referenceno: WEP001672
+        outputtype: JSON
+        Content-Type: application/json
+        Location:
+        HTTP_METHOD: POST
+      url: https4://api.wepgst.com/asp/cancelEwayBill
+    -
+      name: updateVehicle
+      headers:
+        Ocp-Apim-Subscription-Key: 7ad84a349ab045e7a2e0f274f17a8855
+        Gstin:
+        sourcetype: ERP
+        referenceno: WEP001672
+        outputtype: JSON
+        Content-Type: application/json
+        Location:
+        HTTP_METHOD: POST
+      url: https4://api.wepgst.com/asp/UpdateVehicle
+
+audit-configuration:
+  url: http://localhost:5984/mydb

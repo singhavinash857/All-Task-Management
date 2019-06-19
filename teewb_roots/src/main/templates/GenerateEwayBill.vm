@@ -1,0 +1,64 @@
+#macro(defaultvalue  $parm)
+#if (!$!parm || $!parm == "")""#else"$parm"#end
+#end
+{
+"ewbValue" :
+[
+#foreach($invoice in $body)
+{
+"supplyType": #defaultvalue($invoice.getFieldValue("supplytype")),
+"subSupplyType": #defaultvalue($invoice.getFieldValue("subsupplytype")),
+"docType": #defaultvalue($invoice.getFieldValue("doctype")),
+"docNo": #defaultvalue($invoice.getFieldValue("docno")),
+"docDate": #defaultvalue($invoice.getFieldValue("docdate")),
+"fromGstin": #defaultvalue($invoice.getFieldValue("fromgstin")),
+"fromTrdName": #defaultvalue($invoice.getFieldValue("fromtrdname")),
+"fromAddr1": #defaultvalue($invoice.getFieldValue("fromaddr1")),
+"fromAddr2": #defaultvalue($invoice.getFieldValue("fromaddr2")),
+"fromPlace": #defaultvalue($invoice.getFieldValue("fromplace")),
+"fromPincode": $invoice.getFieldValue("frompincode"),
+"fromStateCode": $invoice.getFieldValue("fromstatecode"),
+"toGstin": #defaultvalue($invoice.getFieldValue("togstin")),
+"toTrdName": #defaultvalue($invoice.getFieldValue("totrdname")),
+"toAddr1": #defaultvalue($invoice.getFieldValue("toaddr1")),
+"toAddr2": #defaultvalue($invoice.getFieldValue("toaddr2")),
+"toPlace": #defaultvalue($invoice.getFieldValue("toplace")),
+"toPincode": $invoice.getFieldValue("topincode"),
+"toStateCode": $invoice.getFieldValue("tostatecode"),
+"totalValue": $invoice.getFieldValue("totalvalue"),
+"cgstValue": $invoice.getFieldValue("cgstvalue"),
+"sgstValue": $invoice.getFieldValue("sgstvalue"),
+"igstValue": $invoice.getFieldValue("igstvalue"),
+"cessValue": $invoice.getFieldValue("cessvalue"),
+"transporterId": #defaultvalue($invoice.getFieldValue("transporterid")),
+"transporterName": #defaultvalue($invoice.getFieldValue("transportername")),
+"transDocNo": #defaultvalue($invoice.getFieldValue("transdocno")),
+"transMode": $invoice.getFieldValue("transmode"),
+"transDistance": #defaultvalue($invoice.getFieldValue("transdistance")),
+"transDocDate": #defaultvalue($invoice.getFieldValue("transdocdate")),
+"vehicleNo": #defaultvalue($invoice.getFieldValue("vehicleno")),
+"vehicleType": #defaultvalue($invoice.getFieldValue("vehicletype")),
+"itemList":
+[
+#foreach($item in $invoice.items)
+{
+"productName": #defaultvalue($item.getFieldValue("productname")),
+"productDesc": #defaultvalue($item.getFieldValue("productdesc")),
+"hsnCode": $item.getFieldValue("hsncode"),
+"quantity": $item.getFieldValue("quantity"),
+"qtyUnit":  #defaultvalue($item.getFieldValue("qtyunit")),
+"cgstRate": $item.getFieldValue("cgstrate"),
+"sgstRate": $item.getFieldValue("sgstrate"),
+"igstRate": $item.getFieldValue("igstrate"),
+"cessRate": $item.getFieldValue("cessrate"),
+"cessAdvol": 0,
+"taxableAmount":$item.getFieldValue("taxablevalue")
+}#if ($foreach.hasNext),#end
+
+#end
+]
+}#if ($foreach.hasNext),#end
+
+#end
+]
+}

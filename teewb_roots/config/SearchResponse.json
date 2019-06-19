@@ -1,0 +1,75 @@
+{
+    "docs": [
+        {
+            "_id": "06a8d6abffa04d6bb463f3fbd01f1357",
+            "_rev": "1-2f4d111d565a35cc9328085a160e0a70",
+            "trxIds": [
+                300362
+            ],
+            "request": {
+                "ewbValue": [
+                    {
+                        "supplyType": "O",
+                        "subSupplyType": "1",
+                        "docType": "INV",
+                        "docNo": "1412123",
+                        "docDate": "16/05/2018",
+                        "fromGstin": "05AAACC4214B1ZK",
+                        "fromTrdName": "KALATHARA BUILDING PRODUCTS",
+                        "fromAddr1": "DOOR NO:VI/1726,KODUMBA POST",
+                        "fromAddr2": "NEAR PREMIER MODERN RICE MILL,AMBUJAM",
+                        "fromPlace": "PALAKKAD",
+                        "fromPincode": 678551,
+                        "fromStateCode": 29,
+                        "toGstin": "32ARNPV1484B1ZR",
+                        "toTrdName": "KALATHARA BUILDING PRODUCTS",
+                        "toAddr1": "DOOR NO:VI/1726,KODUMBA POST",
+                        "toAddr2": "NEAR PREMIER MODERN RICE MILL,AMBUJAM",
+                        "toPlace": "PALAKKAD",
+                        "toPincode": 678551,
+                        "toStateCode": 28,
+                        "totalValue": 2239.5,
+                        "cgstValue": 0,
+                        "sgstValue": 0,
+                        "igstValue": 168296.67,
+                        "cessValue": 224395.56,
+                        "transporterId": "1",
+                        "transporterName": "DHL",
+                        "transDocNo": "6767",
+                        "transMode": 1,
+                        "transDistance": "200",
+                        "transDocDate": "28/04/2018",
+                        "vehicleNo": "KL04BL4567",
+                        "vehicleType": "R",
+                        "itemList": [
+                            {
+                                "productName": "FG30000079",
+                                "productDesc": "LOW CARBON SILICO MANGANESE",
+                                "hsnCode": 1001,
+                                "quantity": 21,
+                                "qtyUnit": "NOS",
+                                "cgstRate": 0,
+                                "sgstRate": 0,
+                                "igstRate": 5,
+                                "cessRate": 0,
+                                "cessAdvol": 0,
+                                "taxableAmount": 200000
+                            }
+                        ]
+                    }
+                ]
+            },
+            "response": {
+                "OutputResponse": {
+                    "status": "0",
+                    "errorCodes": "222,371,372,362",
+                    "error": "eyJlcnJvckNvZGVzIjoiMjIyLDM3MSwzNzIsMzYyLCJ9",
+                    "errorDesciption": "",
+                    "success": false
+                }
+            }
+        }
+    ],
+    "bookmark": "g1AAAABweJzLYWBgYMpgSmHgKy5JLCrJTq2MT8lPzkzJBYorGJglWqSYJSalpSUamKSYJSWZmBmnGaclpRgYphkam5qD9HHA9BGlIwsA2kEffQ",
+    "warning": "no matching index found, create an index to optimize query time"
+}

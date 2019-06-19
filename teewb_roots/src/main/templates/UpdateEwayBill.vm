@@ -1,0 +1,17 @@
+#macro(defaultvalue $param)
+#if (!$!param || $!param == "")""#else"$param"#end
+#end
+{
+    "ewbValue":{
+        "ewbNo": $body.getFieldValue("e_ewayBillNo"),
+        "vehicleNo": #defaultvalue($body.getFieldValue("e_vehicleNo")),
+        "fromPlace": #defaultvalue($body.getFieldValue("e_fromPlace")),
+        "fromState": $body.getFieldValue("e_fromState"),
+        "reasonCode": #defaultvalue($body.getFieldValue("e_reasonCode")),
+        "reasonRem": #defaultvalue($body.getFieldValue("e_reasonRem")),
+        "transDocNo ": #defaultvalue($body.getFieldValue("e_transDocNo")),
+        "transDocDate ": #defaultvalue($body.getFieldValue("e_transDocDate")),
+        "transMode": #defaultvalue($body.getFieldValue("e_transMode")),
+        "vehicleType": #defaultvalue($body.getFieldValue("e_vehicleType"))
+    }
+}

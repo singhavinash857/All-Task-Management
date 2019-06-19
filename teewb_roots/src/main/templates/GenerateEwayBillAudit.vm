@@ -1,0 +1,13 @@
+{
+    "type" : "audit",
+    "trxIds" : {
+        #foreach($trxId in $body.trxIds)
+            $trxId#if ($foreach.hasNext),#end
+        #end
+    },
+    "request" :
+        $body.request
+    ,
+    "response" :
+        $body.response
+}

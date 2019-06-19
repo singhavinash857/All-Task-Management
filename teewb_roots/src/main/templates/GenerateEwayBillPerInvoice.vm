@@ -1,0 +1,65 @@
+#macro(defaultvalue  $parm)
+#if (!$!parm || $!parm == "")""#else"$parm"#end
+#end
+
+{
+"ewbValue" :{
+"supplyType": #defaultvalue($body.getFieldValue("e_supplytype")),
+"subSupplyType": #defaultvalue($body.getFieldValue("e_subsupplytype")),
+"subSupplyDesc": #defaultvalue($body.getFieldValue("e_subsupplydesc")),
+"docType": #defaultvalue($body.getFieldValue("e_doctype")),
+"docNo": #defaultvalue($body.getFieldValue("e_docno")),
+"docDate": #defaultvalue($body.getFieldValue("e_docdate")),
+"fromGstin": #defaultvalue($body.getFieldValue("e_fromgstin")),
+"fromTrdName": #defaultvalue($body.getFieldValue("e_fromtrdname")),
+"fromAddr1": #defaultvalue($body.getFieldValue("e_fromaddr1")),
+"fromAddr2": #defaultvalue($body.getFieldValue("e_fromaddr2")),
+"fromPlace": #defaultvalue($body.getFieldValue("e_fromplace")),
+"fromPincode": #defaultvalue($body.getFieldValue("e_frompincode")),
+"fromStateCode": $body.getFieldValue("e_fromstatecode"),
+"actFromStateCode": $body.getFieldValue("e_actfromstatecode"),
+"toGstin": #defaultvalue($body.getFieldValue("e_togstin")),
+"toTrdName": #defaultvalue($body.getFieldValue("e_totrdname")),
+"toAddr1": #defaultvalue($body.getFieldValue("e_toaddr1")),
+"toAddr2": #defaultvalue($body.getFieldValue("e_toaddr2")),
+"toPlace": #defaultvalue($body.getFieldValue("e_toplace")),
+"toPincode": #defaultvalue($body.getFieldValue("e_topincode")),
+"toStateCode": $body.getFieldValue("e_tostatecode"),
+"actToStateCode": $body.getFieldValue("e_acttostatecode"),
+"transactionType": $body.getFieldValue("e_transactiontype"),
+"otherValue": $body.getFieldValue("e_othervalue"),
+"totalValue": $body.getFieldValue("e_totalvalue"),
+"cgstValue": $body.getFieldValue("e_cgstvalue"),
+"sgstValue": $body.getFieldValue("e_sgstvalue"),
+"igstValue": $body.getFieldValue("e_igstvalue"),
+"cessValue": $body.getFieldValue("e_cessvalue"),
+"cessNonAdvolValue": $body.getFieldValue("e_cessnonadvolvalue"),
+"totInvValue": $body.getFieldValue("e_totinvvalue"),
+"transporterId": #defaultvalue($body.getFieldValue("e_transporterid")),
+"transporterName": #defaultvalue($body.getFieldValue("e_transportername")),
+"transDocNo": #defaultvalue($body.getFieldValue("e_transdocno")),
+"transMode": #defaultvalue($body.getFieldValue("e_transmode")),
+"transDistance": #defaultvalue($body.getFieldValue("e_transdistance")),
+"transDocDate": #defaultvalue($body.getFieldValue("e_transdocdate")),
+"vehicleNo": #defaultvalue($body.getFieldValue("e_vehicleno")),
+"vehicleType": #defaultvalue($body.getFieldValue("e_vehicletype")),
+"itemList":
+[
+#foreach($item in $body.items)
+{
+"productName": #defaultvalue($item.getFieldValue("e_productname")),
+"productDesc": #defaultvalue($item.getFieldValue("e_productdesc")),
+"hsnCode": $item.getFieldValue("e_hsncode"),
+"quantity": $item.getFieldValue("e_quantity"),
+"qtyUnit":  #defaultvalue($item.getFieldValue("e_qtyunit")),
+"cgstRate": $item.getFieldValue("e_cgstrate"),
+"sgstRate": $item.getFieldValue("e_sgstrate"),
+"igstRate": $item.getFieldValue("e_igstrate"),
+"cessRate": $item.getFieldValue("e_cessrate"),
+"cessNonAdvol": $item.getFieldValue("e_cessnonadvol"),
+"taxableAmount": $item.getFieldValue("e_taxablevalue")
+}#if ($foreach.hasNext),#end
+#end
+]
+}
+}

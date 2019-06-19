@@ -1,0 +1,10 @@
+#macro(defaultvalue $param)
+#if (!$!param || $!param == "")""#else"$param"#end
+#end
+{
+    "ewbValue" : {
+        "ewbNo" : $body.getFieldValue("e_ewayBillNo"),
+        "cancelRsnCode" : $body.getFieldValue("e_cancelRsnCode"),
+        "cancelRmrk" : #defaultvalue($body.getFieldValue("e_cancelRmrk"))
+    }
+}
