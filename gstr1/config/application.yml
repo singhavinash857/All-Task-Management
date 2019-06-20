@@ -1,0 +1,366 @@
+server:
+  port: 8080
+camel:
+  springboot:
+    name: gstr
+management:
+  port: 8081
+endpoints:
+  enabled: false
+  health:
+    enabled: true
+quickstart:
+  generateOrderPeriod: 10s
+  processOrderPeriod: 30s
+  
+############ QUERIES FOR FETCHING DATA ##################
+query-configuration:
+  source: CSV
+
+
+####################### CSV CONFIGURATION #######################
+csv-configuration:
+  configurations:
+    -
+      name: saveGstrForDocuments
+      inputPath: D:/GST_API_Details/My_Reference/GSTR1_CSV_DATA/save_gstr/data_input
+      outputPath: D:/GST_API_Details/My_Reference/GSTR1_CSV_DATA/save_gstr/data_output
+      userName:
+      password:
+      initialDelay: 5000
+      consumeDelay: 5000
+      tableMetadataConfiguration:
+        tables:
+          -
+            name: gstrTable
+            identifierColumn: FIRST_PARTY_PRIMARY_REG_NUM
+            columns:
+              - DETAIL_TAX_LINE_ID
+              - FIRST_PARTY_PRIMARY_REG_NUM
+              - PERIOD_NAME
+              - GROSS_TURNOVER
+              - CURRENT_GROSS_TURNOVER
+              - SECTION_CODE
+              - THIRD_PARTY_REG_NUM
+              - TRX_ID
+              - TAX_INVOICE_NUMBER
+              - TAX_INVOICE_DATE
+              - TAX_INVOICE_VALUE
+              - SERIAL_NO
+              - TAX_RATE
+              - TAXABLE_AMT
+              - SGST
+              - CGST
+              - IGST
+              - CESS
+              - STATE
+              - INV_TYPE
+              - REV_CHARGE
+              - ECOM_OPERATOR
+              - INV_CHECK_SUM_VAL
+              - EXPORT_TYPE
+              - SHIPPABLE_PORT_CODE
+              - SHIPPABLE_BILL_NO
+              - SHIPPABLE_BILL_DATE
+              - HSN_CODE
+              - HSN_DESC
+              - QTY
+              - UOM
+              - NIL_AMOUNT
+              - EXPT_AMOUNT
+              - NGSUP_AMOUNT
+              - ADV_RECEIPT_AMT
+              - SUPP_TYPE
+              - APPLIED_TO_TRX_ID
+              - REQUEST_ID
+              - CREATED_BY
+              - CREATION_DATE
+              - LAST_UPDATED_BY
+              - LAST_UPDATE_DATE
+              - LAST_UPDATE_LOGIN
+              - ATTRIBUTE1
+              - ATTRIBUTE2
+              - ATTRIBUTE3
+              - ATTRIBUTE4
+              - ATTRIBUTE5
+              - ATTRIBUTE6
+              - ATTRIBUTE7
+              - ATTRIBUTE8
+              - ATTRIBUTE9
+              - ATTRIBUTE10
+              - ATTRIBUTE11
+              - ATTRIBUTE12
+              - APPLIED_FROM_TRX_ID
+              - INELIG_ITC_FLAG
+              - ITC_IGST
+              - ITC_SGST
+              - ITC_CGST
+              - ITC_CESS
+              - SERIAL_NUM
+              - PORT_CODE
+              - IS_SEZ
+              - REV_GSTIN
+              - REV_INV_NUM
+              - REV_INV_DATE
+              - REV_INV_VAL
+              - NOTE_TYPE
+              - P_GST
+              - RSN
+              - TRX_NUMBER
+              - TRX_DATE
+              - EVENT_CLASS_CODE
+              - ERROR_MSG_GSTR1
+              - ERROR_MSG_GSTR2
+              - ERROR_MSG_CODE1
+              - ERROR_MSG_CODE2
+              - SOURCE
+              - SOURCE_APPLICATION
+              - PROCESS_STATUS
+              - BATCH_ID                  
+      validation:
+        numericColumns:
+          - DETAIL_TAX_LINE_ID
+          - GROSS_TURNOVER
+          - CURRENT_GROSS_TURNOVER
+          - TRX_ID
+          - TAX_INVOICE_VALUE
+          - SERIAL_NO
+          - TAX_RATE
+          - TAXABLE_AMT
+          - SGST
+          - CGST
+          - IGST
+          - CESS
+          - QTY
+          - NIL_AMOUNT
+          - EXPT_AMOUNT
+          - NGSUP_AMOUNT
+          - ADV_RECEIPT_AMT
+          - REQUEST_ID    
+          - ITC_IGST    
+          - ITC_SGST    
+          - ITC_CGST    
+          - ITC_CESS    
+          - SERIAL_NUM   
+          - PORT_CODE    
+          - REV_INV_VAL    
+          - BATCH_ID   
+      outputColumns:
+        - gstin_number
+        - gstin_action_type
+        - gstin_error_message
+        - gstin_error_code
+        - gstin_Process_status
+        - intg_tracking_id
+
+          ################################ Database table details configuration ########################
+# list of columns in invoice and items table. separated by comma
+
+table-metadata-configuration:
+        tables:
+          -
+            name: gstrTable
+            identifierColumn: FIRST_PARTY_PRIMARY_REG_NUM
+            columns:
+              - DETAIL_TAX_LINE_ID
+              - FIRST_PARTY_PRIMARY_REG_NUM
+              - PERIOD_NAME
+              - GROSS_TURNOVER
+              - CURRENT_GROSS_TURNOVER
+              - SECTION_CODE
+              - THIRD_PARTY_REG_NUM
+              - TRX_ID
+              - TAX_INVOICE_NUMBER
+              - TAX_INVOICE_DATE
+              - TAX_INVOICE_VALUE
+              - SERIAL_NO
+              - TAX_RATE
+              - TAXABLE_AMT
+              - SGST
+              - CGST
+              - IGST
+              - CESS
+              - STATE
+              - INV_TYPE
+              - REV_CHARGE
+              - ECOM_OPERATOR
+              - INV_CHECK_SUM_VAL
+              - EXPORT_TYPE
+              - SHIPPABLE_PORT_CODE
+              - SHIPPABLE_BILL_NO
+              - SHIPPABLE_BILL_DATE
+              - HSN_CODE
+              - HSN_DESC
+              - QTY
+              - UOM
+              - NIL_AMOUNT
+              - EXPT_AMOUNT
+              - NGSUP_AMOUNT
+              - ADV_RECEIPT_AMT
+              - SUPP_TYPE
+              - APPLIED_TO_TRX_ID
+              - REQUEST_ID
+              - CREATED_BY
+              - CREATION_DATE
+              - LAST_UPDATED_BY
+              - LAST_UPDATE_DATE
+              - LAST_UPDATE_LOGIN
+              - ATTRIBUTE1
+              - ATTRIBUTE2
+              - ATTRIBUTE3
+              - ATTRIBUTE4
+              - ATTRIBUTE5
+              - ATTRIBUTE6
+              - ATTRIBUTE7
+              - ATTRIBUTE8
+              - ATTRIBUTE9
+              - ATTRIBUTE10
+              - ATTRIBUTE11
+              - ATTRIBUTE12
+              - APPLIED_FROM_TRX_ID
+              - INELIG_ITC_FLAG
+              - ITC_IGST
+              - ITC_SGST
+              - ITC_CGST
+              - ITC_CESS
+              - SERIAL_NUM
+              - PORT_CODE
+              - IS_SEZ
+              - REV_GSTIN
+              - REV_INV_NUM
+              - REV_INV_DATE
+              - REV_INV_VAL
+              - NOTE_TYPE
+              - P_GST
+              - RSN
+              - TRX_NUMBER
+              - TRX_DATE
+              - EVENT_CLASS_CODE
+              - ERROR_MSG_GSTR1
+              - ERROR_MSG_GSTR2
+              - ERROR_MSG_CODE1
+              - ERROR_MSG_CODE2
+              - SOURCE
+              - SOURCE_APPLICATION
+              - PROCESS_STATUS
+              - BATCH_ID  
+####################### GSTR1 COLUMNS CONFIGURATION ####################    
+gstr-table-columns:
+  gstr:
+    -
+      name: saveGSTR
+      columns:
+        DETAIL_TAX_LINE_ID: DETAIL_TAX_LINE_ID
+        FIRST_PARTY_PRIMARY_REG_NUM: FIRST_PARTY_PRIMARY_REG_NUM
+        PERIOD_NAME: PERIOD_NAME
+        GROSS_TURNOVER: GROSS_TURNOVER
+        CURRENT_GROSS_TURNOVER: CURRENT_GROSS_TURNOVER
+        SECTION_CODE: SECTION_CODE
+        THIRD_PARTY_REG_NUM: THIRD_PARTY_REG_NUM
+        TRX_ID: TRX_ID
+        TAX_INVOICE_NUMBER: TAX_INVOICE_NUMBER
+        TAX_INVOICE_DATE: TAX_INVOICE_DATE
+        TAX_INVOICE_VALUE: TAX_INVOICE_VALUE
+        SERIAL_NO: SERIAL_NO
+        TAX_RATE: TAX_RATE
+        TAXABLE_AMT: TAXABLE_AMT
+        SGST: SGST
+        CGST: CGST
+        IGST: IGST
+        CESS: CESS
+        STATE: STATE
+        INV_TYPE: INV_TYPE
+        REV_CHARGE: REV_CHARGE
+        ECOM_OPERATOR: ECOM_OPERATOR
+        INV_CHECK_SUM_VAL: INV_CHECK_SUM_VAL
+        EXPORT_TYPE: EXPORT_TYPE
+        SHIPPABLE_PORT_CODE: SHIPPABLE_PORT_CODE
+        SHIPPABLE_BILL_NO: SHIPPABLE_BILL_NO
+        SHIPPABLE_BILL_DATE: SHIPPABLE_BILL_DATE
+        HSN_CODE: HSN_CODE
+        HSN_DESC: HSN_DESC
+        QTY: QTY
+        UOM: UOM
+        NIL_AMOUNT: NIL_AMOUNT
+        EXPT_AMOUNT: EXPT_AMOUNT
+        NGSUP_AMOUNT: NGSUP_AMOUNT
+        ADV_RECEIPT_AMT: ADV_RECEIPT_AMT
+        SUPP_TYPE: SUPP_TYPE
+        APPLIED_TO_TRX_ID: APPLIED_TO_TRX_ID
+        REQUEST_ID: REQUEST_ID
+        CREATED_BY: CREATED_BY
+        CREATION_DATE: CREATION_DATE
+        LAST_UPDATED_BY: LAST_UPDATED_BY
+        LAST_UPDATE_DATE: LAST_UPDATE_DATE
+        LAST_UPDATE_LOGIN: LAST_UPDATE_LOGIN
+        ATTRIBUTE1: ATTRIBUTE1
+        ATTRIBUTE2: ATTRIBUTE2
+        ATTRIBUTE3: ATTRIBUTE3
+        ATTRIBUTE4: ATTRIBUTE4
+        ATTRIBUTE5: ATTRIBUTE5
+        ATTRIBUTE6: ATTRIBUTE6
+        ATTRIBUTE7: ATTRIBUTE7
+        ATTRIBUTE8: ATTRIBUTE8
+        ATTRIBUTE9: ATTRIBUTE9
+        ATTRIBUTE10: ATTRIBUTE10
+        ATTRIBUTE11: ATTRIBUTE11
+        ATTRIBUTE12: ATTRIBUTE12
+        APPLIED_FROM_TRX_ID: APPLIED_FROM_TRX_ID
+        INELIG_ITC_FLAG: INELIG_ITC_FLAG
+        ITC_IGST: ITC_IGST
+        ITC_SGST: ITC_SGST
+        ITC_CGST: ITC_CGST
+        ITC_CESS: ITC_CESS
+        SERIAL_NUM: SERIAL_NUM
+        PORT_CODE: PORT_CODE
+        IS_SEZ: IS_SEZ
+        REV_GSTIN: REV_GSTIN
+        REV_INV_NUM: REV_INV_NUM
+        REV_INV_DATE: REV_INV_DATE
+        REV_INV_VAL: REV_INV_VAL
+        NOTE_TYPE: NOTE_TYPE
+        P_GST: P_GST
+        RSN: RSN
+        TRX_NUMBER: TRX_NUMBER
+        TRX_DATE: TRX_DATE
+        EVENT_CLASS_CODE: EVENT_CLASS_CODE
+        ERROR_MSG_GSTR1: ERROR_MSG_GSTR1
+        ERROR_MSG_GSTR2: ERROR_MSG_GSTR2
+        ERROR_MSG_CODE1: ERROR_MSG_CODE1
+        ERROR_MSG_CODE2: ERROR_MSG_CODE2
+        SOURCE: SOURCE
+        SOURCE_APPLICATION: SOURCE_APPLICATION
+        PROCESS_STATUS: PROCESS_STATUS
+        BATCH_ID: BATCH_ID
+      components:
+        B2B : B2B
+        B2CL : B2CL
+        B2CS : B2CS
+        AT : AT
+        HSN : HSN
+        TXPD : TXPD
+        EXP : EXP
+        CDNUR : CDNUR
+        CDNR : CDNR
+        NIL : NIL
+        DOC_ISSUE : DOC_ISSUE
+        
+                           
+####################### GSTR1 API CONFIGURATION ####################
+api-configuration:
+  apis:
+    -
+      name: saveGSTR
+      headers:
+        ocp-apim-subscription-key: 7ad84a349ab045e7a2e0f274f17a8855
+        gstinno: 29AAKCA7120L1ZE
+        source_type: ERP
+        reference_no: WEP00531
+        outputtype: json
+        Content-Type: application/json
+        Authorization: Basic Og==
+        HTTP_METHOD: POST
+      url: https://api.wepgst.com/asp/gstr1/save
+
+audit-configuration:
+  url: http://localhost:5984/gstr1tb
