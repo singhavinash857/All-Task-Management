@@ -18,22 +18,15 @@ public class GenerateCsvOutputProcessor implements Processor {
 
 	@Autowired
 	private CsvConfiguration csvConfiguration;
-	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-
 		TableMetadataConfiguration.Table invoiceTable = csvConfiguration.findByName("saveGstrForDocuments")
 				.getTableMetadataConfiguration().findByName("gstrTable");
 		
 		String gstinNumber = null;
-		
 		CsvOutputData csvOutputData = (CsvOutputData) exchange.getProperty("outputCSVData");
-		
-		System.out.println("csvOutputData testing ::::"+csvOutputData.toString());
-		
 		if(exchange.getProperty("proccessCode") == "B2CS"){
 			System.out.println("B2CS component in GenerateCsvOutputProcessor ::");
 			com.transformedge.gstr.b2cs.entities.GstValue processedInvoice = exchange.getProperty("origInvoice", com.transformedge.gstr.b2cs.entities.GstValue.class);
@@ -93,8 +86,6 @@ public class GenerateCsvOutputProcessor implements Processor {
 			logger.error("output data cant create, please check you component in GenerateCsvOutputProcessor !!");
 		}
 		OutputResponse outputResponse = exchange.getIn().getBody(OutputResponse.class);
-		
-		System.out.println("outputResponse testing ::::::"+outputResponse);
 		int errorCount = outputResponse.getActions().get(0).getDetails().get(0).getErrorRecordsCount();
 		if(errorCount == 0){
 			csvOutputData.addDataToRows(invoiceTable.getIdentifierColumn(), gstinNumber,

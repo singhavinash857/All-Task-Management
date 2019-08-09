@@ -11,7 +11,6 @@ public class PrepareAuditDataProcessor implements Processor {
 
     @Override
     public void process(Exchange exchange) throws Exception {
-    	
         Audit audit = new Audit();
         audit.setRequest((String) exchange.getProperty("requestJSON"));
         audit.setResponse((String) exchange.getProperty("responseJSON"));

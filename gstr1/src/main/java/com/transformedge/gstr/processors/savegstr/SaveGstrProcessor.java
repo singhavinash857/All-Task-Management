@@ -104,10 +104,8 @@ public class SaveGstrProcessor implements Processor {
 			Object exp_type = mapRow.get(gstrColumnsObj.getColumnsValue("EXPORT_TYPE"));
 			Object hsnCode = mapRow.get(gstrColumnsObj.getColumnsValue("HSN_CODE"));
 			Object supply_type = mapRow.get(gstrColumnsObj.getColumnsValue("SUPP_TYPE"));
-			
 			Object num = mapRow.get(gstrColumnsObj.getColumnsValue("SERIAL_NO"));
 			Object doc_num = mapRow.get(gstrColumnsObj.getColumnsValue("ATTRIBUTE2"));
-			
 
 			switch(gstrColumnsObj.getComponent(sectionCode.toString().toUpperCase())){
 			case "B2B" :
@@ -242,7 +240,6 @@ public class SaveGstrProcessor implements Processor {
 				break;
 			case "TXPD" :
 				if(gstrColumnsObj.getComponent(sectionCode.toString().toUpperCase()).equalsIgnoreCase("TXPD")){
-					System.out.println("TXPD");
 					gstValueTxpd =  gstrInvoiceTxpdMap.getOrDefault(identifierColumn, null);
 					Txpd txpd = null;
 					if(gstValueTxpd != null){
@@ -634,7 +631,6 @@ public class SaveGstrProcessor implements Processor {
 
 
 	private void addB2CsToGstin(B2CS b2cs, Map<String, Object> mapRow) {
-
 		b2cs.setSply_ty(mapRow.get(gstrColumnsObj.getColumnsValue("SUPP_TYPE")).toString());
 		b2cs.setRt((long)mapRow.get(gstrColumnsObj.getColumnsValue("TAX_RATE")));
 		b2cs.setTyp(mapRow.get(gstrColumnsObj.getColumnsValue("ATTRIBUTE1")).toString());

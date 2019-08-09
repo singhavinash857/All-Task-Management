@@ -31,8 +31,7 @@ public class CsvDataProcessor implements Processor {
     @SuppressWarnings("unchecked")
 	@Override
     public void process(Exchange exchange) throws Exception {
-		System.out.println("inside the CsvDataProcessor ::");
-
+    	logger.info(("inside the CsvDataProcessor ::"));
         CsvConfiguration.CsvConfig csvConfig = csvConfiguration.findByName("saveGstrForDocuments");
         TableMetadataConfiguration.Table table = csvConfig.getTableMetadataConfiguration().findByName("gstrTable");
         List<String> gstrTableColumns = table.getColumns();
@@ -43,7 +42,6 @@ public class CsvDataProcessor implements Processor {
         logger.debug(csvData.toString());
         for(List<String> values : csvData){
             Map<String, Object> row = new LinkedHashMap<>();
-
             for(int index = 0 ; index < gstrTableColumns.size() ; index++){
             	String columnName = gstrTableColumns.get(index);
             	if(numericColumns.contains(columnName)){

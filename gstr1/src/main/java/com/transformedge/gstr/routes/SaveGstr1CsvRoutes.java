@@ -83,24 +83,30 @@ public class SaveGstr1CsvRoutes extends RouteBuilder{
 		TableMetadataConfiguration.Table table = csvConfig.getTableMetadataConfiguration().findByName("gstrTable");
 
 		onException(IllegalStateException.class, IOException.class)
+		// Calling Endpoint that will process the invalid data in csv..
 		.to("direct:processInvalidFile");
 
+		// Reading the file from input folder..
 		from("file://" + csvConfig.getInputPath() + "?initialDelay=" + csvConfig.getInitialDelay()+"&delay="+csvConfig.getConsumeDelay()+"&move=.done")
 		.routeId("CSVPoller")
 		.autoStartup(false)
 		.log(LoggingLevel.INFO, "Processing CSV file ${header.CamelFileNameOnly}")
 		.setProperty("origFileName", simple("${header.CamelFileNameOnly}"))
 		.unmarshal(new CsvDataFormat("|"))
+		// Checking the validations of csv data..(numeric data,date type etc..)
 		.process(csvValidationProcessor)
 		.log("CSV data after validation: ${body}")
 		.log("validation failed invoices: ${exchangeProperty.validationFailedInvoices}")
+		// Keeping valid and invalid data in..
 		.process(csvDataProcessor)
 		.log("CSV data processing: ${body}")
 		.log("outputCSVData : ${exchangeProperty.outputCSVData}")
+		// Creating the json from the csv data..
 		.process(saveGstrProcessor)
 		.split(body()).streaming()
 		   .log("original gstrInvoice : ${body}")
 		   .setProperty("origInvoice", simple("${body}"))
+		   // Calling Endpoint to store the invoice details in database..
 		   .to("direct:persistRequestInvoiceForCsv")
 		   .setBody(simple("${exchangeProperty.origInvoice}"))
 		   .to("direct:prepareRequestJSONForCsv")
@@ -180,7 +186,7 @@ public class SaveGstr1CsvRoutes extends RouteBuilder{
 		.to("file://" + csvConfig.getOutputPath() + "?fileName=${exchangeProperty.origFileName}")
 		.end();
 
-		// getting single invoice at a time....
+		// Storing the invoice into the database, getting single invoice at a time....
 		from("direct:persistRequestInvoiceForCsv")
 		.routeId("PersistRequestInvoiceForCsv")	
 		.process(exchange -> {
@@ -260,6 +266,7 @@ public class SaveGstr1CsvRoutes extends RouteBuilder{
 		.log("Existing invoice. No need to persist in Database!!!")
 		.end();
 
+		// Endpoint to processing the invalid data in the csv file..
 		from("direct:processInvalidFile")
 		.log("The CSV file is invalid. Please check the data")
 		.process(exchange -> {
@@ -296,6 +303,7 @@ public class SaveGstr1CsvRoutes extends RouteBuilder{
 		.convertBodyTo(String.class)
 		.setProperty("requestJSON", simple("${body}"))
 		.log(LoggingLevel.INFO, "Save GSTR request JSON is: ${body}")
+		// Calling Endpoint..
 		.to("direct:callSaveGstr1APIForCsv")
 		.end();
 
@@ -304,6 +312,7 @@ public class SaveGstr1CsvRoutes extends RouteBuilder{
 		format.setUnmarshalType(OutputResponse.class);
 		format.enableFeature(DeserializationFeature.UNWRAP_ROOT_VALUE);
 
+		// Endpoint to call the real api and sending json with headers as request..
 		from("direct:callSaveGstr1APIForCsv")
 		.routeId("InvokeEwayBillApiRouteForCsv")
 		.process(exchange -> {
@@ -312,10 +321,12 @@ public class SaveGstr1CsvRoutes extends RouteBuilder{
 					.collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
 			in.setHeaders(newMap);
 		})
+		
 		.doTry()
 		.to(api.getUrl())
 		.unmarshal(format)
 		.log(LoggingLevel.INFO, "Response from saveGstr API is: ${body.toJSON()}")
+		// Calling the endpoint to storing the response into the csv file..
 		.to("direct:processResponseForCsv")
 		.doCatch(Exception.class)
 		.log(LoggingLevel.ERROR, "Exception occured when invoking Eway Bill APIs ${exchangeProperty.CamelExceptionCaught}")
@@ -326,23 +337,26 @@ public class SaveGstr1CsvRoutes extends RouteBuilder{
 				exchange.setProperty("EwayBillException", new EwayBillProcessFailure(ProcessExceptionCodes.SYSTEM_ERROR, cause));
 			}
 		})
-		.endDoTry();
+		.endDoTry(); // end of api calling endpoint
 
+		// Endpoit to storing the api response into the output csv file..
 		from("direct:processResponseForCsv")
 		.routeId("PrepareAuditDataRouteForCsv")
 		.setProperty("responseJSON", simple("${body.toJSON()}"))
+		// Creating the output data format in csv..
 		.process(generateCsvOutputProcessor)
 		.log(LoggingLevel.INFO, "Preparing CSV response for file ${exchangeProperty.origFileName}")
 		.to("direct:persistAuditForCsv");
-
 
 		 from("direct:processExceptionResponseForCsv")
          .routeId("ProcessErrorResponseForCsv")
          .bean(OutputResponse.class, "fromValidationException(${exchangeProperty.EwayBillException})")
          .process(generateCsvOutputProcessor)
          .setProperty("responseJSON", simple("${body.toJSON()}"))
+         // Calling endpoint for storing the response into the database..
          .to("direct:persistAuditForCsv");
          
+		// Endpoint to storing the Api response also into the database..
 		from("direct:persistAuditForCsv")
 		.routeId("PersistAuditDataRouteForCsv")
 		.marshal().json(JsonLibrary.Jackson)

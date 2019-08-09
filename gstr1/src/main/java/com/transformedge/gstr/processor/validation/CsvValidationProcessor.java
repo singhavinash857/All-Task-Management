@@ -26,26 +26,21 @@ public class CsvValidationProcessor implements Processor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		System.out.println("inside the CsvValidationProcessor ::");
-
+		logger.info(("inside the CsvValidationProcessor ::"));
 		CsvConfiguration.CsvConfig csvConfig = csvConfiguration.findByName("saveGstrForDocuments");
 		TableMetadataConfiguration.Table table = csvConfig.getTableMetadataConfiguration().findByName("gstrTable");
 		List<String> numericColumns = csvConfig.getValidation().getNumericColumns();
 		List<String> gstrTableColumns = table.getColumns();
 		List<CsvFailedValidationOutput> failedValidationOutputs = new ArrayList<>();
 		List<List<String>> filteredCsvData = new ArrayList<>();
-
-		@SuppressWarnings("unchecked")
 		List<List<String>> csvData = (List<List<String>>) exchange.getIn().getBody();
 		outer : for(List<String> csvValues : csvData){
-
 			boolean isValidCsvData = true;
 			for (CsvFailedValidationOutput csvFailedValidationOutput : failedValidationOutputs) {
 				if(csvFailedValidationOutput.getFailedInvoice().getGstin().equalsIgnoreCase(csvValues.get(1))){
 					continue outer;
 				}
 			}
-
 			for(int index = 0 ; index <  gstrTableColumns.size() ; index++){
 				String columnName = gstrTableColumns.get(index);
 				if(numericColumns.contains(columnName)){
@@ -54,7 +49,6 @@ public class CsvValidationProcessor implements Processor {
 						GstrFailedInvoice gstrFailedInvoice = new GstrFailedInvoice();
 						gstrFailedInvoice.setGstin(csvValues.get(1));
 					//	gstrFailedInvoice.setActionType(actionType);
-						
 						CsvFailedValidationOutput csvFailedValidationOutput = new CsvFailedValidationOutput(gstrFailedInvoice,
 								"Field: " + columnName + " should be a number but has invalid value: " + csvValues.get(index),
 								ProcessExceptionCodes.VALIDATION_ERROR);
